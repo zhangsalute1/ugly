@@ -117,16 +117,30 @@
           filter="url(#fuzzy)" />
       </g>
     </svg>
-    <button @click="generateFace">换一个</button>
+    <button @click="handleGenerateFace">换一个</button>
     <button @click="downloadSVGAsPNG">下载</button>
+    <a-modal v-model:open="modalVisible" title="激活高级版" ok-text="激活" cancel-text="取消" @ok="handleActivate"
+      :maskClosable="false">
+      <div>请输入激活码：</div>
+      <a-input v-model:value="activationCode" placeholder="输入激活码"></a-input>
+      <p v-if="activationFailed" style="color: red;">激活码无效，请重新输入！</p>
+    </a-modal>
   </div>
 </template>
 
 <script>
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
+import { Modal, Input } from 'ant-design-vue';
+// import 'ant-design-vue/dist/antd.css';
 import * as faceShape from "../utils/face_shape.js";
 import * as eyeShape from "../utils/eye_shape.js";
 import * as hairLines from "../utils/hair_lines.js";
 import * as mouthShape from "../utils/mouth_shape.js";
+
+
+// 假设的有效激活码
+const validActivationCodes = ['CODE123', 'CODE456', 'CODE789'];
 
 function randomFromInterval(min, max) {
   // min and max included
@@ -134,9 +148,18 @@ function randomFromInterval(min, max) {
 }
 
 export default {
+  components: {
+    'a-modal': Modal,
+    'a-input': Input,
+  },
   name: "FaceGenerator",
   data() {
     return {
+      modalVisible: false,
+      activationCode: '',
+      activationFailed: false,
+      transformCount: 0,
+      isActivated: localStorage.getItem('isActivated') === 'true',
       faceScale: 1.8, // face scale
       computedFacePoints: [], // the polygon points for face countour
       eyeRightUpper: [], // the points for right eye upper lid
@@ -215,6 +238,28 @@ export default {
     };
   },
   methods: {
+    handleActivate() {
+      if (validActivationCodes.includes(this.activationCode)) {
+        localStorage.setItem('isActivated', 'true');
+        this.isActivated = true;
+        this.modalVisible = false;
+        this.activationFailed = false;
+        localStorage.setItem('transformCount', '0'); // 重置点击次数
+        message.success('激活成功！');
+      } else {
+        this.activationFailed = true;
+      }
+    },
+
+    handleGenerateFace() {
+      if (!this.isActivated && this.transformCount >= 10) {
+        this.modalVisible = true;
+      } else {
+        this.transformCount++;
+        localStorage.setItem('transformCount', this.transformCount.toString());
+        this.generateFace();
+      }
+    },
     generateFace() {
       let faceResults = faceShape.generateFaceCountourPoints();
       this.computedFacePoints = faceResults.face;
@@ -390,6 +435,7 @@ export default {
     },
   },
   mounted() {
+    this.transformCount = parseInt(localStorage.getItem('transformCount'), 10) || 0;
     this.generateFace();
     // add key binding
     window.addEventListener("keydown", (e) => {
