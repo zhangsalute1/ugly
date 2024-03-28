@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div class="title">丑丑头像生成器</div>
+    <div class="title">ChatHave.net</div>
+
     <svg viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg" width="500" height="500" id="face-svg">
       <defs>
         <clipPath id="leftEyeClipPath">
@@ -140,7 +143,7 @@ import * as mouthShape from "../utils/mouth_shape.js";
 
 
 // 假设的有效激活码
-const validActivationCodes = ['CODE123', 'CODE456', 'CODE789'];
+const validActivationCodes = ['36Sem4LtnqaPc5h', 'kH5JmnKvAmPcGwn', 'SgLjmKbuBktg2xj', 'hXcwkgWhmH7mKz8', 'p4R2DaRbPaxFXaV'];
 
 function randomFromInterval(min, max) {
   // min and max included
@@ -495,5 +498,14 @@ button:hover {
 button:active {
   background: rgb(65, 65, 65);
   box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.75);
+}
+
+.title {
+  color: #909090;
+  font-size: 20px;
+  height: 40px;
+  line-height: 40px;
+  position: relative;
+  pointer-events: none;
 }
 </style>
