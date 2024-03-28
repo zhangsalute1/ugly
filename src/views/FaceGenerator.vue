@@ -126,7 +126,7 @@
       :maskClosable="false">
       <div>请输入激活码：</div>
       <a-input v-model:value="activationCode" placeholder="输入激活码"></a-input>
-      <div>￥9.9激活高级版，不限次数，不限时间，点此购买激活码<a href="">https://www.youpumao.xyz/fAniMv</a></div>
+      <div>￥9.9激活高级版，不限次数，不限时间<a href="https://www.youpumao.xyz/fAniMv" target="_blank">点我购买激活码</a></div>
       <p v-if="activationFailed" style="color: red;">激活码无效，请重新输入！</p>
     </a-modal>
   </div>
