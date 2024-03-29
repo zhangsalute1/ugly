@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="title">丑丑头像生成器</div>
-    <div class="title">ChatHave.net</div>
+    <div class="title">UglyPic.xyz</div>
 
     <svg viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg" width="500" height="500" id="face-svg">
       <defs>
